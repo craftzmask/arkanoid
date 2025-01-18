@@ -29,3 +29,9 @@ bool RectF::DoTestCollision(const RectF& rect) const
 		top <= rect.bottom &&
 		bottom >= rect.top;
 }
+
+RectF RectF::FromCenter(const Vec2& center, float halfWidth, float halfHeight)
+{
+	const Vec2 half = Vec2(halfWidth, halfHeight);
+	return RectF(center - half, center + half);
+}
