@@ -9,5 +9,19 @@ Brick::Brick(const RectF& rect_in, Color c_in)
 
 void Brick::Draw(Graphics& gfx) const
 {
-	gfx.DrawRect(rect, c);
+	if (!destroyed)
+	{
+		gfx.DrawRect(rect, c);
+	}
+}
+
+bool Brick::DoBallCollision(Ball& ball)
+{
+	if (rect.DoTestCollision(ball.GetRect()))
+	{
+		destroyed = true;
+		return true;
+	}
+
+	return false;
 }

@@ -26,7 +26,8 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
-	brick = Brick(RectF(40.0f, 150.0f, 40.0f, 80.0f), Colors::Green);
+	walls = RectF(0.0f, 800.0f, 0.0f, 600.0f);
+	ball = Ball(Vec2(50.0f, 50.0f), Vec2(300.0f, 300.0f));
 }
 
 void Game::Go()
@@ -39,9 +40,13 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = ft.Mark();
+	ball.Update(dt);
+	ball.DoWallsCollision(walls);
 }
 
 void Game::ComposeFrame()
 {
 	brick.Draw(gfx);
+	ball.Draw(gfx);
 }
