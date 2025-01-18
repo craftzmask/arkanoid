@@ -17,8 +17,9 @@ void Brick::Draw(Graphics& gfx) const
 
 bool Brick::DoBallCollision(Ball& ball)
 {
-	if (rect.DoTestCollision(ball.GetRect()))
+	if (!destroyed && rect.DoTestCollision(ball.GetRect()))
 	{
+		ball.ReboundY();
 		destroyed = true;
 		return true;
 	}
