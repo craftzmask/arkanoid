@@ -28,8 +28,22 @@ Game::Game( MainWindow& wnd )
 	brickSound(L"Sounds\\arkbrick.wav")
 {
 	walls = RectF(0.0f, 800.0f, 0.0f, 600.0f);
-	brick = Brick(RectF(400.0f, 600.0f, 400.0f, 500.0f), Colors::Green);
-	ball = Ball(Vec2(50.0f, 50.0f), Vec2(300.0f, 300.0f));
+	ball = Ball(Vec2(400.0f, 500.0f), Vec2(300.0f, -300.0f));
+
+	Vec2 topLeft = Vec2(40.0f, 40.0f);
+
+	Color colors[4] = {Colors::Blue, Colors::Green, Colors::Red, Colors::Yellow};
+
+	int i = 0;
+	for (int y = 0; y < nBricksDown; y++)
+	{
+		Color c = colors[y];
+		for (int x = 0; x < nBricksAcross; x++)
+		{
+			bricks[i] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight),brickWidth, brickHeight), c);
+			i++;
+		}
+	}
 }
 
 void Game::Go()
@@ -50,14 +64,22 @@ void Game::UpdateModel()
 		brickSound.Play();
 	}
 
-	if (brick.DoBallCollision(ball))
+	for (Brick& b : bricks)
 	{
-		brickSound.Play();
+		if (b.DoBallCollision(ball))
+		{
+			brickSound.Play();
+			break;
+		}
 	}
 }
 
 void Game::ComposeFrame()
 {
-	brick.Draw(gfx);
+	for (const Brick& b : bricks)
+	{
+		b.Draw(gfx);
+	}
+
 	ball.Draw(gfx);
 }
