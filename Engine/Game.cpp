@@ -21,19 +21,18 @@
 #include "MainWindow.h"
 #include "Game.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd ),
-	brickSound(L"Sounds\\arkbrick.wav")
+	wnd(wnd),
+	gfx(wnd),
+	brickSound(L"Sounds\\arkbrick.wav"),
+	padSound(L"Sounds\\arkpad.wav"),
+	pad(Vec2(400.0f, 500.0f)),
+	ball(Vec2(400.0f, 500.0f), Vec2(300.0f, -300.0f)),
+	walls(0.0f, 800.0f, 0.0f, 600.0f)
 {
-	walls = RectF(0.0f, 800.0f, 0.0f, 600.0f);
-	ball = Ball(Vec2(400.0f, 500.0f), Vec2(300.0f, -300.0f));
-
 	Vec2 topLeft = Vec2(40.0f, 40.0f);
-
 	Color colors[4] = {Colors::Blue, Colors::Green, Colors::Red, Colors::Yellow};
-
 	int i = 0;
 	for (int y = 0; y < nBricksDown; y++)
 	{
@@ -58,10 +57,17 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 	ball.Update(dt);
+	pad.Update(dt, wnd.kbd);
+	pad.DoWallsCollision(walls);
 	
 	if (ball.DoWallsCollision(walls))
 	{
 		brickSound.Play();
+	}
+
+	if (pad.DoBallCollision(ball))
+	{
+		padSound.Play();
 	}
 
 	for (Brick& b : bricks)
@@ -76,6 +82,8 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+	pad.Draw(gfx);
+
 	for (const Brick& b : bricks)
 	{
 		b.Draw(gfx);

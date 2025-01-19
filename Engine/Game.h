@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include "Brick.h"
 #include "Ball.h"
+#include "Paddle.h"
 #include "FrameTimer.h"
 #include "Sound.h"
 
@@ -56,6 +57,8 @@ private:
 	RectF walls;
 	Brick bricks[nBricks];
 	Ball ball;
+	Paddle pad;
 	Sound brickSound;
+	Sound padSound;
 	/********************************/
 };
