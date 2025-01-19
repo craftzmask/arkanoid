@@ -13,7 +13,7 @@ void Paddle::Draw(Graphics& gfx) const
 
 bool Paddle::DoBallCollision(Ball& ball) const
 {
-	if (GetRect().DoTestCollision(ball.GetRect()))
+	if (ball.GetVelocity().y > 0.0f && GetRect().DoTestCollision(ball.GetRect()))
 	{
 		ball.ReboundY();
 		return true;
