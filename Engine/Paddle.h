@@ -19,5 +19,6 @@ private:
 	static constexpr float speed = 300.0f;
 	static constexpr float width = 80.0f;
 	static constexpr float height = 20.0f;
+	static constexpr float wingWidth = 10.0f;
 	Vec2 pos;
 };

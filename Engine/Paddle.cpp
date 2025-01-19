@@ -8,7 +8,11 @@ Paddle::Paddle(const Vec2& pos_in)
 
 void Paddle::Draw(Graphics& gfx) const
 {
-	gfx.DrawRect(GetRect(), Colors::White);
+	RectF rect = GetRect();
+	gfx.DrawRect(rect, Colors::Red);
+	rect.left += wingWidth;
+	rect.right -= wingWidth;
+	gfx.DrawRect(rect, Colors::White);
 }
 
 bool Paddle::DoBallCollision(Ball& ball) const
