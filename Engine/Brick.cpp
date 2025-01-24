@@ -19,7 +19,15 @@ bool Brick::DoBallCollision(Ball& ball)
 {
 	if (!destroyed && rect.DoTestCollision(ball.GetRect()))
 	{
-		ball.ReboundY();
+		const Vec2& pos = ball.GetPosition();
+		if (pos.x >= rect.left && pos.x <= rect.right)
+		{
+			ball.ReboundY();
+		}
+		else
+		{
+			ball.ReboundX();
+		}
 		destroyed = true;
 		return true;
 	}
