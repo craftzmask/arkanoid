@@ -40,3 +40,8 @@ RectF RectF::GetExpanded(float padding) const
 {
 	return RectF(left - padding, right + padding, top - padding, bottom + padding);
 }
+
+Vec2 RectF::GetCenter() const
+{
+	return Vec2((left + right) / 2.0f, (top + bottom) / 2.0f);
+}

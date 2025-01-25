@@ -28,7 +28,7 @@ Game::Game(MainWindow& wnd)
 	brickSound(L"Sounds\\arkbrick.wav"),
 	padSound(L"Sounds\\arkpad.wav"),
 	pad(Vec2(400.0f, 500.0f)),
-	ball(Vec2(400.0f, 500.0f), Vec2(300.0f, -300.0f)),
+	ball(Vec2(500.0f, 500.0f), Vec2(-300.0f, -300.0f)),
 	walls(0.0f, 800.0f, 0.0f, 600.0f)
 {
 	Vec2 topLeft = Vec2(40.0f, 40.0f);
@@ -70,13 +70,37 @@ void Game::UpdateModel()
 		padSound.Play();
 	}
 
-	for (Brick& b : bricks)
+	bool collisionHappened = false;
+	float curColDistSq;
+	int indexColDist = 0;
+
+	for (int i = 0; i < nBricks; i++)
 	{
-		if (b.DoBallCollision(ball))
+		if (bricks[i].CheckBallCollision(ball))
 		{
-			brickSound.Play();
-			break;
+			const float newColDistSq = (ball.GetPosition() - bricks[i].GetCenter()).GetLengthSq();
+
+			if (collisionHappened)
+			{
+				if (newColDistSq < curColDistSq)
+				{
+					curColDistSq = newColDistSq;
+					indexColDist = i;
+				}
+			}
+			else
+			{
+				curColDistSq = newColDistSq;
+				indexColDist = i;
+				collisionHappened = true;
+			}
 		}
+	}
+
+	if (collisionHappened)
+	{
+		bricks[indexColDist].ExecuteBallCollision(ball);
+		brickSound.Play();
 	}
 }
 

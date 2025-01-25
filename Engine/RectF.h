@@ -12,6 +12,7 @@ public:
 	bool DoTestCollision(const RectF& rect) const;
 	static RectF FromCenter(const Vec2& center, float halfWidth, float halfHeight);
 	RectF GetExpanded(float padding) const;
+	Vec2 GetCenter() const;
 public:
 	float top;
 	float bottom;
