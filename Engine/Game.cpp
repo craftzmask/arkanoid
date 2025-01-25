@@ -71,6 +71,7 @@ void Game::UpdateModel(float dt)
 	
 	if (ball.DoWallsCollision(walls))
 	{
+		pad.ResetCooldown();
 		brickSound.Play();
 	}
 
@@ -108,6 +109,7 @@ void Game::UpdateModel(float dt)
 
 	if (collisionHappened)
 	{
+		pad.ResetCooldown();
 		bricks[indexColDist].ExecuteBallCollision(ball);
 		brickSound.Play();
 	}
