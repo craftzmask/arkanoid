@@ -28,7 +28,7 @@ Game::Game(MainWindow& wnd)
 	brickSound(L"Sounds\\arkbrick.wav"),
 	padSound(L"Sounds\\arkpad.wav"),
 	pad(Vec2(400.0f, 500.0f)),
-	ball(Vec2(500.0f, 500.0f), Vec2(-300.0f, -300.0f)),
+	ball(Vec2(530.0f, 500.0f), Vec2(-300.0f, -300.0f)),
 	walls(0.0f, 800.0f, 0.0f, 600.0f)
 {
 	Vec2 topLeft = Vec2(40.0f, 40.0f);
@@ -39,7 +39,9 @@ Game::Game(MainWindow& wnd)
 		Color c = colors[y];
 		for (int x = 0; x < nBricksAcross; x++)
 		{
-			bricks[i] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight),brickWidth, brickHeight), c);
+			if (x == 3 && y == 3) {
+				bricks[i] = Brick(RectF(topLeft + Vec2(x * brickWidth, y * brickHeight), brickWidth, brickHeight), c);
+			}
 			i++;
 		}
 	}
