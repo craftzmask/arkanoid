@@ -1,4 +1,5 @@
 #include "Paddle.h"
+#include <cmath>
 
 Paddle::Paddle(const Vec2& pos_in)
 	:
@@ -17,11 +18,25 @@ void Paddle::Draw(Graphics& gfx) const
 
 bool Paddle::DoBallCollision(Ball& ball) const
 {
-	if (ball.GetVelocity().y > 0.0f && GetRect().DoTestCollision(ball.GetRect()))
+	const RectF& rect = ball.GetRect();
+
+	if (GetRect().DoTestCollision(rect))
 	{
-		ball.ReboundY();
+		if (std::signbit(ball.GetVelocity().x) == std::signbit((ball.GetPosition() - pos).x))
+		{
+			ball.ReboundY();
+		}
+		else if (pos.x >= rect.left && pos.x <= rect.right)
+		{
+			ball.ReboundY();
+		}
+		else
+		{
+			ball.ReboundX();
+		}
 		return true;
 	}
+
 	return false;
 }
 
