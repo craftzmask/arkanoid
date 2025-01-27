@@ -114,7 +114,7 @@ void Game::UpdateModel(float dt)
 			brickSound.Play();
 		}
 
-		if (ball.GetRect().bottom >= Graphics::ScreenHeight)
+		if (ball.GetRect().bottom >= walls.GetRectNoBorder().bottom)
 		{
 			isGameover = true;
 		}
