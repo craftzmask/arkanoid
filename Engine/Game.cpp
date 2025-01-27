@@ -65,53 +65,61 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
-	ball.Update(dt);
-	pad.Update(dt, wnd.kbd);
-	pad.DoWallsCollision(walls);
-	
-	if (ball.DoWallsCollision(walls))
+	if (!isGameover)
 	{
-		pad.ResetCooldown();
-		brickSound.Play();
-	}
+		ball.Update(dt);
+		pad.Update(dt, wnd.kbd);
+		pad.DoWallsCollision(walls);
 
-	if (pad.DoBallCollision(ball))
-	{
-		padSound.Play();
-	}
-
-	bool collisionHappened = false;
-	float curColDistSq;
-	int indexColDist = 0;
-
-	for (int i = 0; i < nBricks; i++)
-	{
-		if (bricks[i].CheckBallCollision(ball))
+		if (ball.DoWallsCollision(walls))
 		{
-			const float newColDistSq = (ball.GetPosition() - bricks[i].GetCenter()).GetLengthSq();
+			pad.ResetCooldown();
+			brickSound.Play();
+		}
 
-			if (collisionHappened)
+		if (pad.DoBallCollision(ball))
+		{
+			padSound.Play();
+		}
+
+		bool collisionHappened = false;
+		float curColDistSq;
+		int indexColDist = 0;
+
+		for (int i = 0; i < nBricks; i++)
+		{
+			if (bricks[i].CheckBallCollision(ball))
 			{
-				if (newColDistSq < curColDistSq)
+				const float newColDistSq = (ball.GetPosition() - bricks[i].GetCenter()).GetLengthSq();
+
+				if (collisionHappened)
+				{
+					if (newColDistSq < curColDistSq)
+					{
+						curColDistSq = newColDistSq;
+						indexColDist = i;
+					}
+				}
+				else
 				{
 					curColDistSq = newColDistSq;
 					indexColDist = i;
+					collisionHappened = true;
 				}
 			}
-			else
-			{
-				curColDistSq = newColDistSq;
-				indexColDist = i;
-				collisionHappened = true;
-			}
 		}
-	}
 
-	if (collisionHappened)
-	{
-		pad.ResetCooldown();
-		bricks[indexColDist].ExecuteBallCollision(ball);
-		brickSound.Play();
+		if (collisionHappened)
+		{
+			pad.ResetCooldown();
+			bricks[indexColDist].ExecuteBallCollision(ball);
+			brickSound.Play();
+		}
+
+		if (ball.GetRect().bottom >= Graphics::ScreenHeight)
+		{
+			isGameover = true;
+		}
 	}
 }
 
@@ -125,4 +133,9 @@ void Game::ComposeFrame()
 	}
 
 	ball.Draw(gfx);
+
+	if (isGameover)
+	{
+		SpriteCodex::DrawGameOver(358, 268, gfx);
+	}
 }
