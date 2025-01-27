@@ -28,7 +28,7 @@ Game::Game(MainWindow& wnd)
 	brickSound(L"Sounds\\arkbrick.wav"),
 	padSound(L"Sounds\\arkpad.wav"),
 	pad(Vec2(400.0f, 500.0f)),
-	ball(Vec2(530.0f, 500.0f), Vec2(-300.0f, -300.0f)),
+	ball(Vec2(400.0f, 470.0f), Vec2(-250.0f, -250.0f)),
 	walls(Vec2(400.0f, 300.0f))
 {
 	Vec2 topLeft = Vec2(20.0f, 20.0f) + walls.GetTopLeft();
