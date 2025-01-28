@@ -1,9 +1,11 @@
 #include "Paddle.h"
 #include <cmath>
+#include <algorithm>
 
-Paddle::Paddle(const Vec2& pos_in)
+Paddle::Paddle(const Vec2& pos_in, int lives_in)
 	:
-	pos(pos_in)
+	pos(pos_in),
+	lives(lives_in)
 {
 }
 
@@ -80,4 +82,14 @@ RectF Paddle::GetRect() const
 void Paddle::ResetCooldown()
 {
 	isCooldown = false;
+}
+
+void Paddle::LoseLive()
+{
+	lives = max(0, lives - 1);
+}
+
+int Paddle::GetLives() const
+{
+	return lives;
 }

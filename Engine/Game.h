@@ -42,6 +42,7 @@ private:
 	void UpdateModel(float dt);
 	/********************************/
 	/*  User Functions              */
+	void DrawLives(int lives, const Vec2& pos, Graphics& gfx) const;
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -53,6 +54,8 @@ private:
 	static constexpr int nBricksAcross = 11;
 	static constexpr int nBricksDown = 4;
 	static constexpr int nBricks = nBricksAcross * nBricksDown;
+	static constexpr int paddleLives = 3;
+	static constexpr float liveSize = 20.0f;
 
 	FrameTimer ft;
 	Brick bricks[nBricks];

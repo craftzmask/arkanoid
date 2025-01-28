@@ -27,7 +27,7 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	brickSound(L"Sounds\\arkbrick.wav"),
 	padSound(L"Sounds\\arkpad.wav"),
-	pad(Vec2(400.0f, 500.0f)),
+	pad(Vec2(400.0f, 500.0f), paddleLives),
 	ball(Vec2(400.0f, 470.0f), Vec2(-250.0f, -250.0f)),
 	walls(Vec2(400.0f, 300.0f))
 {
@@ -116,13 +116,31 @@ void Game::UpdateModel(float dt)
 
 		if (ball.GetRect().bottom >= walls.GetRectNoBorder().bottom)
 		{
+			pad.LoseLive();
+		}
+
+		if (pad.GetLives() == 0)
+		{
 			isGameover = true;
 		}
 	}
 }
 
+void Game::DrawLives(int lives, const Vec2& pos, Graphics& gfx) const
+{
+	for (int i = 0; i < lives; i++)
+	{
+		const float offset = i * liveSize + pos.x;
+		const RectF rect = RectF({ offset, pos.y }, liveSize, liveSize).GetExpanded(-1.0f);
+		gfx.DrawRect(rect, Colors::Red);
+	}
+}
+
 void Game::ComposeFrame()
 {
+	Vec2 topLeftLivePos = { 700.0f, 30.0f };
+	DrawLives(pad.GetLives(), topLeftLivePos, gfx);
+	
 	walls.Draw(gfx);
 	pad.Draw(gfx);
 
